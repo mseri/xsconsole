@@ -286,7 +286,10 @@ class Data:
                         key_uuid = "%s_uuid" % key
                         try:
                             sr_ref = inPool[key]
-                            retPool[key_uuid] = None if sr_ref == NULL_REF else self.session.xenapi.SR.get_uuid(sr_ref)
+                            if sr_ref == NULL_REF:
+                                retPool[key_uuid] = None
+                            else:
+                                retPool[key_uuid] = self.session.xenapi.SR.get_uuid(sr_ref)
                         except:
                             XSLog("Cleared dangling reference for %s" % key)
                             retPool[key_uuid] = None
